@@ -4,6 +4,7 @@
 """
 
 import PySimpleGUI as sg
+from prettytable import PrettyTable
 import sympy as sym
 from math import sqrt
 from math import e
@@ -12,17 +13,27 @@ import sympy.parsing.sympy_parser as symp
 from sympy.parsing.sympy_parser import parse_expr
 from numpy.linalg import inv
 
-transformations = (symp.standard_transformations +(symp.implicit_multiplication_application,))
+transformations = (symp.standard_transformations + (symp.implicit_multiplication_application,))
 
 
-sg.theme('LightGreen4')  # please make your windows colorful
+sg.theme('LightGreen4')
 
-layout = [[sg.InputCombo(('Busquedas incrementales', 'Biseccion','Regla falsa','Punto fijo',
-                          'Secante','Newton','Raices multiples','Jacobi','Factorización LU','GaussSeidel','Eliminación Gaussiana',
-                          'Pivoteo parcial','Pivoteo total','Diferencias divididas',
-                          'Interpolación Lagrange','Splines cuadráticas')
-                         , size=(30, 1))],
-            [sg.Submit(), sg.Cancel()]]
+layout = [[sg.InputCombo(('Busquedas incrementales', 
+                          'Biseccion',
+                          'Regla falsa',
+                          'Punto fijo',
+                          'Secante',
+                          'Newton',
+                          'Raices multiples',
+                          'Jacobi',
+                          'Factorización LU',
+                          'GaussSeidel',
+                          'Eliminación Gaussiana',
+                          'Pivoteo parcial',
+                          'Pivoteo total',
+                          'Diferencias divididas',
+                          'Interpolación Lagrange',
+                          'Splines cuadráticas'), size=(30, 1))], [sg.Submit(), sg.Cancel()]]
 
 window = sg.Window('Escoger método', layout)
 
@@ -578,41 +589,57 @@ if metodo =='Secante':
     sg.Popup('Resultados Secante',
              metodoSecante(f,x0,xf,numIter,tol))
     window.close()
-      
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------    
+
+newtonTable = PrettyTable()
+newtonTable.field_names =['Iteracion', 'Xn', 'F(x)', 'Error']
+
 def Newton (f, df, x0, numIter, tol):
   cont = 0
   error = tol + 1
+  newtonTable.add_row([cont, x0, float(f.subs(x, x0)), error])
   while (cont < numIter and error > tol):
     xn = x0 - float(f.subs(x, x0))/float(df.subs(x, x0))
-    error = abs(xn - x0)
+    error = abs(xn - x0) / abs(xn)
     cont += 1
     x0 = xn
+    newtonTable.add_row([cont, x0, float(f.subs(x, x0)), error])
+    
+    #print(cont, x0, float(f.subs(x, x0)), error)
   if error <= tol:
-    return(str(xn) + " es raíz con tolerancia " + str(tol)+ " y el algorítmo paró en la iteración: " + str(cont))
+    result = [newtonTable, str(xn) + " es raíz con tolerancia " + str(tol)+ " y el algorítmo paró en la iteración: " + str(cont)]
+    return result
   else:
     return("El método no converge")
 
 if metodo =='Newton':
-    sg.theme('BluePurple')  # please make your windows colorful
+  sg.theme('BluePurple') 
 
-    layout = [[sg.Text('f', size=(15, 1)), sg.InputText()],
-              [sg.Text('x0', size=(15, 1)), sg.InputText()],
+  layout = [[sg.Text('f', size=(15, 1)), sg.InputText()],
+            [sg.Text('x0', size=(15, 1)), sg.InputText()],
             [sg.Text('tol', size=(15, 1)), sg.InputText()],
             [sg.Text('numIteracion', size=(15, 1)), sg.InputText()],
             [sg.Submit(), sg.Cancel()]]
 
-    window = sg.Window('Newton', layout)
+  window = sg.Window('Newton', layout)
 
-    event, values = window.read()
-    window.close()
-    f,x0, tol,numIter = values[0],float(values[1]), float(values[2]),int(values[3]) 
-    
-    f = parse_expr(f, transformations=transformations)
-    df = sym.diff(f, x)
-    
-    sg.Popup('Resultados Newton',
-             Newton (f, df, x0, numIter, tol))
-    window.close()
+  event, values = window.read()
+  window.close()
+
+  f, x0, tol, numIter = values[0],float(values[1]), float(values[2]),int(values[3]) 
+      
+  f = parse_expr(f, transformations=transformations)
+  df = sym.diff(f, x)
+
+  result = Newton(f, df, x0, numIter, tol)
+
+  sg.Popup('Resultados Newton', result[0], line_width=300)
+  sg.Popup('Resultados Newton', result[1], line_width=300)
+
+  window.close()
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------    
     
 def RaicesMultiples (f, df, dff, x0, numIter, tol):
   iter = 0
