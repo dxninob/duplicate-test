@@ -24,7 +24,8 @@ layout = [[sg.InputCombo(('Busquedas incrementales',
                           'Punto fijo',
                           'Secante',
                           'Newton',
-                          'Raices multiples',
+                          'Raices multiples metodo 1',
+                          'Raices multiples metodo 2',
                           'Jacobi',
                           'Factorización LU',
                           'GaussSeidel',
@@ -593,18 +594,18 @@ if metodo =='Punto fijo':
 #-----------------------------------------------------------------------------------------------------------------------------
 
 secanteTable = PrettyTable()
-secanteTable.field_names =['Iteracion', 'Xn', 'F(x)', 'Error']
+secanteTable.field_names =['Iteracion', 'Xn', 'F(x)']
 
 def metodoSecante(f,x0,x1,numIter,tol):
   iter = 0
-  error = tol
-  secanteTable.add_row([iter, x0, float(f.subs(x, x0)), error])
   while iter <= numIter:
     newX1 = float(x1 - (f.subs(x, x1)*((x1 - x0) / (f.subs(x, x1) - f.subs(x, x0)))))
+    secanteTable.add_row([iter, newX1, float(f.subs(x, newX1))])
     if f.subs(x, x0) == 0:
       return(str(x0) + " es una raíz de " + str(f))
     elif abs(newX1 - x1) <= tol:
-      return(str(newX1) + " es raíz con tolerancia " + str(tol) + " con "+ str(iter)+" iteraciones."  )
+      result = [secanteTable, str(newX1) + " es raíz con tolerancia " + str(tol) + " con "+ str(iter)+" iteraciones."]
+      return result
     elif iter > numIter:
       return("El metodo no converge en estas iteraciones " + str(iter))
     else:
@@ -629,9 +630,11 @@ if metodo =='Secante':
     f,x0, xf,tol, numIter = values[0],float(values[1]), float(values[2]),float(values[3]),int(values[4]) 
     f = parse_expr(f, transformations=transformations)
     
+    result = metodoSecante(f, x0, xf, numIter, tol)
+
+    sg.Popup('Resultados Secante', result[0], line_width=300)
+    sg.Popup('Resultados Secante', result[1], line_width=300)
     
-    sg.Popup('Resultados Secante',
-             metodoSecante(f,x0,xf,numIter,tol))
     window.close()
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------    
@@ -648,9 +651,8 @@ def Newton (f, df, x0, tol, numIter):
     error = abs(xn - x0) / abs(xn) # Relativo
     cont += 1
     x0 = xn
-    newtonTable.add_row([cont, x0, float(f.subs(x, x0)), error])
+    newtonTable.add_row([cont, x0, float(f.subs(x, xn)), error])
     
-    #print(cont, x0, float(f.subs(x, x0)), error)
   if error <= tol:
     result = [newtonTable, str(xn) + " es raíz con tolerancia " + str(tol)+ " y el algorítmo paró en la iteración: " + str(cont)]
     return result
@@ -693,18 +695,18 @@ def RaicesMultiples (f, df, dff, x0, numIter, tol):
   error = tol + 1
   raicesMultiplesTable.add_row([iter, x0, float(f.subs(x, x0)), error])
   while (iter < numIter and error > tol):
-    xn = x0 - (float(f.subs(x, x0)*df.subs(x,x0))/float(df.subs(x, x0)**2-(f.subs(x, x0)*dff.subs(x,x0))))
+    xn = x0 - (float(f.subs(x, x0))/float(df.subs(x, x0)))
     error = abs(xn - x0) #Absoluto
     iter += 1
     x0 = xn
     raicesMultiplesTable.add_row([cont, x0, float(f.subs(x, x0)), error])
   if error <= tol:
-    result = [raicesMultiplesTable, str(xn) + " es raíz con tolerancia " + str(tol)+ " y el algorítmo paró en la iteración: " + str(cont)]
+    result = [raicesMultiples2Table, str(xn) + " es raíz con tolerancia " + str(tol)+ " y el algorítmo paró en la iteración: " + str(cont)]
     return result
   else:
     return("El método no converge")
 
-if metodo =='Raices multiples':
+if metodo =='Raices multiples metodo 1':
     sg.theme('BluePurple') 
 
     layout = [[sg.Text('f', size=(15, 1)), sg.InputText()],
@@ -713,7 +715,7 @@ if metodo =='Raices multiples':
             [sg.Text('numIteracion', size=(15, 1)), sg.InputText()],
             [sg.Submit(), sg.Cancel()]]
 
-    window = sg.Window('Raíces multiples', layout)
+    window = sg.Window('Raíces multiples meotodo 1', layout)
 
     event, values = window.read()
     window.close()
@@ -725,8 +727,55 @@ if metodo =='Raices multiples':
     
     result = RaicesMultiples(f, df, dff, x0, numIter, tol)
 
-    sg.Popup('Resultados Raices multiples', result[0], line_width=300)
-    sg.Popup('Resultados Raices multiples', result[1], line_width=300)
+    sg.Popup('Resultados Raices multiples metodo 1', result[0], line_width=300)
+    sg.Popup('Resultados Raices multiples metodo 1', result[1], line_width=300)
+
+    window.close()
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+
+raicesMultiples2Table = PrettyTable()
+raicesMultiples2Table.field_names =['Iteracion', 'Xn', 'F(x)', 'Error']
+
+def RaicesMultiples2 (f, df, dff, x0, numIter, tol):
+  iter = 0
+  error = tol + 1
+  raicesMultiples2Table.add_row([iter, x0, float(f.subs(x, x0)), error])
+  while (iter < numIter and error > tol):
+    xn = x0 - (float(f.subs(x, x0)*df.subs(x,x0))/float(df.subs(x, x0)**2-(f.subs(x, x0)*dff.subs(x,x0))))
+    error = abs(xn - x0) #Absoluto
+    iter += 1
+    x0 = xn
+    raicesMultiples2Table.add_row([cont, x0, float(f.subs(x, x0)), error])
+  if error <= tol:
+    result = [raicesMultiples2Table, str(xn) + " es raíz con tolerancia " + str(tol)+ " y el algorítmo paró en la iteración: " + str(cont)]
+    return result
+  else:
+    return("El método no converge")
+
+if metodo =='Raices multiples metodo 2':
+    sg.theme('BluePurple') 
+
+    layout = [[sg.Text('f', size=(15, 1)), sg.InputText()],
+              [sg.Text('x0', size=(15, 1)), sg.InputText()],
+            [sg.Text('tol', size=(15, 1)), sg.InputText()],
+            [sg.Text('numIteracion', size=(15, 1)), sg.InputText()],
+            [sg.Submit(), sg.Cancel()]]
+
+    window = sg.Window('Raíces multiples meotodo 2', layout)
+
+    event, values = window.read()
+    window.close()
+    f,x0, tol,numIter = values[0],float(values[1]), float(values[2]),int(values[3]) 
+    
+    f = parse_expr(f, transformations=transformations)
+    df = sym.diff(f, x)
+    dff= sym.diff(df,x)
+    
+    result = RaicesMultiples2(f, df, dff, x0, numIter, tol)
+
+    sg.Popup('Resultados Raices multiples metodo 2', result[0], line_width=300)
+    sg.Popup('Resultados Raices multiples metodo 2', result[1], line_width=300)
 
     window.close()
 
@@ -808,6 +857,9 @@ if metodo =='Factorización LU':
 
 #----------------------------------------------------------------------------------------------------------------------------
 
+jacobiTable = PrettyTable()
+jacobiTable.field_names =['Iteracion', 'Xn', 'Error']
+
 def jacobi(A,b,tol,numIter):
   n = np.size(A,0)
   L = - np.tril(A, -1)
@@ -827,13 +879,16 @@ def jacobi(A,b,tol,numIter):
   error = np.array(abs(xn - (np.dot(Tj,xn)+C)))
   error = np.amax(error)
   iter = 0
+  jacobiTable.add_row([iter, xn, error])
   while ((error > tol) and (iter<numIter)):
     nuevo = np.matmul(Tj,xn)+C
     error = np.array(abs(nuevo-xn))
     error = np.amax(error)
     xn = nuevo
     iter = iter +1
-  return("El método converge en "+str(xn))
+    jacobiTable.add_row([iter, xn, error])
+  result = [jacobiTable,"El método converge en "+str(xn)]
+  return result
 
 if metodo =='Jacobi':
     sg.theme('Dark Blue 3') 
@@ -884,8 +939,11 @@ if metodo =='Jacobi':
     tol = values[cont]
     numIter = int(values[cont+1])
         
-    sg.Popup('Jacobi',
-             jacobi(A, b,tol,numIter))
+    result = jacobi(A, b, tol, numIter)
+
+    sg.Popup('Resultados Jacobi', result[0], line_width=300)
+    sg.Popup('Resultados Jacobi', result[1], line_width=300)
+
     window.close()
 
 #---------------------------------------------------------------------------------------------------------------------------------
@@ -1263,7 +1321,7 @@ if metodo =='Diferencias divididas':
              diferenciasDivididas (puntos))
     window.close()
     
-    
+#---------------------------------------------------------------------------------------------------------------------    
 def lagrange(puntos):
   n = np.size(puntos,0)
   p = 0
@@ -1321,7 +1379,7 @@ if metodo =='Interpolación Lagrange':
              lagrange(puntos))
     window.close()
     
-    
+#------------------------------------------------------------------------------------------------------------------------------    
 def splinesCuadraticos(puntos):
   n = np.size(puntos,0)
   X = puntos[:,0]
