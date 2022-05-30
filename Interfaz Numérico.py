@@ -381,20 +381,26 @@ def entradaPuntos(n):
 
 #------------------------------------------------------------------------------------------------------------------------------------------------------
 
+bITable = PrettyTable()
+bITable.field_names =['Iteracion', 'Xn', 'F(x)']
+
 def busquedasIncrementales (f, x0, deltax, numIteracion):
   if f.subs(x, x0) == 0:
     return (str(x0) + " Es una raíz de " + str(f))
   else: 
     xn = x0 + deltax
     iter = 0
+  bITable.add_row([iter, xn, float(f.subs(x, xn))])
   while (numIteracion > iter and (f.subs(x,x0) * f.subs(x,xn)) > 0):
     x0 = xn
     xn = x0 + deltax
     iter += 1
+    bITable.add_row([iter, xn, float(f.subs(x, xn))])
   if f.subs(x,xn) == 0:
     return (str(xn) + " Es una raíz de " + str(f))
   elif (f.subs(x,x0) * f.subs(x,xn)) < 0:
-    return ("Existe una raíz de " + str(f) + " entre " + str(x0) + " y " + str(xn))
+    result = [bITable, ("Existe una raíz de " + str(f) + " entre " + str(x0) + " y " + str(xn))]
+    return result
   else:
     return ("No se han encontrado raices")
     
@@ -402,7 +408,7 @@ x = sym.Symbol('x')
     
 
 if metodo =='Busquedas incrementales':
-    sg.theme('LightYellow')  # please make your windows colorful
+    sg.theme('LightYellow') 
 
     layout = [[sg.Text('f', size=(15, 1)), sg.InputText()],
               [sg.Text('x0', size=(15, 1)), sg.InputText()],
@@ -417,9 +423,15 @@ if metodo =='Busquedas incrementales':
     f,x0, deltax, numIteracion = values[0],float(values[1]), float(values[2]),int(values[3]) 
     
     f = parse_expr(f, transformations=transformations)
+
+    result = busquedasIncrementales(f,x0,deltax,numIteracion)
+
+    if(len(result) != 2):
+      sg.Popup('Resultados Busquedas Incrementales', result, line_width=300)
+    else:
+      sg.Popup('Resultados Busquedas Incrementales', result[0], line_width=300)
+      sg.Popup('Resultados Busquedas Incrementales', result[1], line_width=300)
     
-    sg.Popup('Resultados de busquedas incrementales',
-             busquedasIncrementales (f, x0, deltax, numIteracion))
     window.close()
 
 #--------------------------------------------------------------------------------------------------------------------------------
@@ -479,8 +491,11 @@ if metodo =='Biseccion':
 
     result = biseccion(f, x0, xf, tol, numIter)
 
-    sg.Popup('Resultados Biseccion', result[0], line_width=300)
-    sg.Popup('Resultados Biseccion', result[1], line_width=300)
+    if(len(result) != 2):
+      sg.Popup('Resultados Biseccion', result, line_width=300)
+    else:
+      sg.Popup('Resultados Biseccion', result[0], line_width=300)
+      sg.Popup('Resultados Biseccion', result[1], line_width=300)
 
     window.close()
 
@@ -513,10 +528,8 @@ def reglaFalsa (f,xi, xf, tol, numIter):
       error = abs(xm - xf)
       numIteracion += 1
       reglaFalsaTable.add_row([numIteracion, xm, float(f.subs(x, xm)), error])
-    if (f.subs(x,xm) == 0):
-      return("Se halló una raíz en " + str(xm) )
-    elif error < tol: 
-      result = [reglaFalsaTable, str(xm) + " es raíz con tolerancia " + str(tol)+ " y el algorítmo paró en la iteración: " + str(numIteracion)]
+    if(error < tol or f.subs(x,xm) == 0)  : 
+      result =[reglaFalsaTable, str(xm) + "es raíz con tolerancia " + str(tol)+ " y el algorítmo paró en la iteración: " + str(numIteracion)]
       return result
     else:
       return("No se halló una solución")
@@ -535,13 +548,16 @@ if metodo =='Regla falsa':
 
     event, values = window.read()
     window.close()
-    f,x0, xf,tol, numIter = values[0],float(values[1]), float(values[2]),float(values[3]),int(values[4]) 
+    f, x0, xf, tol, numIter = values[0],float(values[1]), float(values[2]),float(values[3]),int(values[4]) 
     f = parse_expr(f, transformations=transformations)
     
     result = reglaFalsa(f, x0, xf, tol, numIter)
 
-    sg.Popup('Resultados Regla Falsa', result[0], line_width=300)
-    sg.Popup('Resultados Regla Falsa', result[1], line_width=300)
+    if(len(result) != 2):
+      sg.Popup('Resultados Regla Falsa', result, line_width=300)
+    else:
+      sg.Popup('Resultados Regla Falsa', result[0], line_width=300)
+      sg.Popup('Resultados Regla Falsa', result[1], line_width=300)
     
     window.close()
 
@@ -550,8 +566,7 @@ if metodo =='Regla falsa':
 puntoFijoTable = PrettyTable()
 puntoFijoTable.field_names =['Iteracion', 'Xn', 'F(x)', 'Error']
 
-def puntoFijo(f, x0, numIter, tol):
-  g= -(f-x)
+def puntoFijo(f, g, x0, tol, numIter):
   iter = 0
   error = tol + 1
   puntoFijoTable.add_row([iter, x0, float(f.subs(x, x0)), error])
@@ -560,9 +575,9 @@ def puntoFijo(f, x0, numIter, tol):
     error = abs(xn - x0)
     iter += 1
     x0 = xn
-    puntoFijoTable.add_row([iter, x0, float(f.subs(x, x0)), error])
-  if error <= tol:
-    result = [puntoFijoTable, str(x0) + " es raíz con tolerancia " + str(tol)+ " y el algorítmo paró en la iteración: " + str(iter)]
+    puntoFijoTable.add_row([iter, xn, float(f.subs(x, x0)), error])
+  if error < tol:
+    result = [puntoFijoTable, str(xn) + " es raíz con tolerancia " + str(tol)+ " y el algorítmo paró en la iteración: " + str(iter)]
     return result
   else:
     return("El método no converge")
@@ -572,6 +587,7 @@ if metodo =='Punto fijo':
     sg.theme('LightBlue1') 
 
     layout = [[sg.Text('f', size=(15, 1)), sg.InputText()],
+              [sg.Text('g', size=(15, 1)), sg.InputText()],
               [sg.Text('x0', size=(15, 1)), sg.InputText()],
             [sg.Text('tol', size=(15, 1)), sg.InputText()],
             [sg.Text('numIteracion', size=(15, 1)), sg.InputText()],
@@ -581,13 +597,17 @@ if metodo =='Punto fijo':
 
     event, values = window.read()
     window.close()
-    f ,x0 ,tol , numIter = values[0],float(values[1]), float(values[2]),int(values[3]) 
+    f, g, x0, tol, numIter = values[0], values[1],float(values[2]), float(values[3]),int(values[4]) 
     f = parse_expr(f, transformations=transformations)
+    g = parse_expr(g, transformations=transformations)
     
-    result = puntoFijo(f, x0, tol, numIter)
+    result = puntoFijo(f, g, x0, tol, numIter)
 
-    sg.Popup('Resultados Punto Fijo', result[0], line_width=300)
-    sg.Popup('Resultados Punto Fijo', result[1], line_width=300)
+    if(len(result) != 2):
+      sg.Popup('Resultados Punto Fijo', result, line_width=300)
+    else:
+      sg.Popup('Resultados Punto Fijo', result[0], line_width=300)
+      sg.Popup('Resultados Punto Fijo', result[1], line_width=300)
 
     window.close()
 
@@ -632,9 +652,12 @@ if metodo =='Secante':
     
     result = metodoSecante(f, x0, xf, numIter, tol)
 
-    sg.Popup('Resultados Secante', result[0], line_width=300)
-    sg.Popup('Resultados Secante', result[1], line_width=300)
-    
+    if(len(result) != 2):
+      sg.Popup('Resultados Secante', result, line_width=300)
+    else:
+      sg.Popup('Resultados Secante', result[0], line_width=300)
+      sg.Popup('Resultados Secante', result[1], line_width=300)
+
     window.close()
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------    
@@ -679,9 +702,12 @@ if metodo =='Newton':
   df = sym.diff(f, x)
 
   result = Newton(f, df, x0, tol, numIter)
-
-  sg.Popup('Resultados Newton', result[0], line_width=300)
-  sg.Popup('Resultados Newton', result[1], line_width=300)
+  
+  if(len(result) != 2):
+      sg.Popup('Resultados Newton', result, line_width=300)
+  else:
+      sg.Popup('Resultados Newton', result[0], line_width=300)
+      sg.Popup('Resultados Newton', result[1], line_width=300)
 
   window.close()
 
@@ -699,9 +725,9 @@ def RaicesMultiples (f, df, dff, x0, numIter, tol):
     error = abs(xn - x0) #Absoluto
     iter += 1
     x0 = xn
-    raicesMultiplesTable.add_row([cont, x0, float(f.subs(x, x0)), error])
+    raicesMultiplesTable.add_row([iter, x0, float(f.subs(x, x0)), error])
   if error <= tol:
-    result = [raicesMultiples2Table, str(xn) + " es raíz con tolerancia " + str(tol)+ " y el algorítmo paró en la iteración: " + str(cont)]
+    result = [raicesMultiplesTable, str(xn) + " es raíz con tolerancia " + str(tol)+ " y el algorítmo paró en la iteración: " + str(iter)]
     return result
   else:
     return("El método no converge")
@@ -727,8 +753,12 @@ if metodo =='Raices multiples metodo 1':
     
     result = RaicesMultiples(f, df, dff, x0, numIter, tol)
 
-    sg.Popup('Resultados Raices multiples metodo 1', result[0], line_width=300)
-    sg.Popup('Resultados Raices multiples metodo 1', result[1], line_width=300)
+    if(len(result) != 2):
+      sg.Popup('Resultados Raices Multipes metodo 1', result, line_width=300)
+    else:
+      sg.Popup('Resultados Raices Multipes metodo 1', result[0], line_width=300)
+      sg.Popup('Resultados Raices Multipes metodo 1', result[1], line_width=300)
+
 
     window.close()
 
@@ -746,9 +776,9 @@ def RaicesMultiples2 (f, df, dff, x0, numIter, tol):
     error = abs(xn - x0) #Absoluto
     iter += 1
     x0 = xn
-    raicesMultiples2Table.add_row([cont, x0, float(f.subs(x, x0)), error])
+    raicesMultiples2Table.add_row([iter, x0, float(f.subs(x, x0)), error])
   if error <= tol:
-    result = [raicesMultiples2Table, str(xn) + " es raíz con tolerancia " + str(tol)+ " y el algorítmo paró en la iteración: " + str(cont)]
+    result = [raicesMultiples2Table, str(xn) + " es raíz con tolerancia " + str(tol)+ " y el algorítmo paró en la iteración: " + str(iter)]
     return result
   else:
     return("El método no converge")
@@ -774,8 +804,11 @@ if metodo =='Raices multiples metodo 2':
     
     result = RaicesMultiples2(f, df, dff, x0, numIter, tol)
 
-    sg.Popup('Resultados Raices multiples metodo 2', result[0], line_width=300)
-    sg.Popup('Resultados Raices multiples metodo 2', result[1], line_width=300)
+    if(len(result) != 2):
+      sg.Popup('Resultados Raices Multipes metodo 2', result, line_width=300)
+    else:
+      sg.Popup('Resultados Raices Multipes metodo 2', result[0], line_width=300)
+      sg.Popup('Resultados Raices Multipes metodo 2', result[1], line_width=300)
 
     window.close()
 
@@ -808,7 +841,7 @@ def factorizacionLU(A):
 
 
 if metodo =='Factorización LU':
-    sg.theme('Dark Blue 3')  # please make your windows colorful
+    sg.theme('Dark Blue 3')
 
     layout = [[sg.Text('Escoger el número de ecuaciones')],
               [sg.Slider(range=(1, 10), orientation='h', size=(20, 20), default_value=3)],
@@ -857,9 +890,6 @@ if metodo =='Factorización LU':
 
 #----------------------------------------------------------------------------------------------------------------------------
 
-jacobiTable = PrettyTable()
-jacobiTable.field_names =['Iteracion', 'Xn', 'Error']
-
 def jacobi(A,b,tol,numIter):
   n = np.size(A,0)
   L = - np.tril(A, -1)
@@ -879,15 +909,13 @@ def jacobi(A,b,tol,numIter):
   error = np.array(abs(xn - (np.dot(Tj,xn)+C)))
   error = np.amax(error)
   iter = 0
-  jacobiTable.add_row([iter, xn, error])
   while ((error > tol) and (iter<numIter)):
     nuevo = np.matmul(Tj,xn)+C
     error = np.array(abs(nuevo-xn))
     error = np.amax(error)
     xn = nuevo
     iter = iter +1
-    jacobiTable.add_row([iter, xn, error])
-  result = [jacobiTable,"El método converge en "+str(xn)]
+  result = "El método converge en "+str(xn)
   return result
 
 if metodo =='Jacobi':
@@ -941,8 +969,7 @@ if metodo =='Jacobi':
         
     result = jacobi(A, b, tol, numIter)
 
-    sg.Popup('Resultados Jacobi', result[0], line_width=300)
-    sg.Popup('Resultados Jacobi', result[1], line_width=300)
+    sg.Popup('Resultados Jacobi', result, line_width=300)
 
     window.close()
 
@@ -976,7 +1003,7 @@ def GaussSeidel(A,b,tol,numIter):
   return("El método converge en "+str(xn))
 
 if metodo =='GaussSeidel':
-    sg.theme('Dark Blue 3')  # please make your windows colorful
+    sg.theme('Dark Blue 3')  
 
     layout = [[sg.Text('Escoger el número de ecuaciones')],
               [sg.Slider(range=(1, 10), orientation='h', size=(20, 20), default_value=3)],
@@ -1049,7 +1076,7 @@ def eliminacionGaussiana(A, b):
   return x
     
 if metodo =='Eliminación Gaussiana':
-    sg.theme('Dark Blue 3')  # please make your windows colorful
+    sg.theme('Dark Blue 3')  
 
     layout = [[sg.Text('Escoger el número de ecuaciones')],
               [sg.Slider(range=(1, 10), orientation='h', size=(20, 20), default_value=3)],
@@ -1293,7 +1320,7 @@ if metodo =='Diferencias divididas':
     
     n = int(values[0])
     
-    window = sg.Window('Columns')                                   # blank window
+    window = sg.Window('Columns')                                   
 
     col = entradaPuntos(n)
     
@@ -1351,7 +1378,7 @@ if metodo =='Interpolación Lagrange':
     
     n = int(values[0])
     
-    window = sg.Window('Columns')                                   # blank window
+    window = sg.Window('Columns')                                  
 
     col = entradaPuntos(n)
     
@@ -1428,7 +1455,7 @@ if metodo =='Splines cuadráticas':
     
     n = int(values[0])
     
-    window = sg.Window('Columns')                                   # blank window
+    window = sg.Window('Columns')                                   
 
     col = entradaPuntos(n)
     
