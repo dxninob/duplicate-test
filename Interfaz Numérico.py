@@ -1,20 +1,13 @@
-# -*- coding: utf-8 -*-
-"""
-
-"""
-
 import PySimpleGUI as sg
 from prettytable import PrettyTable
 import sympy as sym
-from math import sqrt
-from math import e
 import numpy as np
 import sympy.parsing.sympy_parser as symp
 from sympy.parsing.sympy_parser import parse_expr
 from numpy.linalg import inv
 
-transformations = (symp.standard_transformations + (symp.implicit_multiplication_application,))
 
+transformations = (symp.standard_transformations + (symp.implicit_multiplication_application,))
 
 sg.theme('LightGreen4')
 
@@ -31,10 +24,7 @@ layout = [[sg.InputCombo(('Busquedas incrementales',
                           'GaussSeidel',
                           'Eliminación Gaussiana',
                           'Pivoteo parcial',
-                          'Pivoteo total',
-                          'Diferencias divididas',
-                          'Interpolación Lagrange',
-                          'Splines cuadráticas'), size=(30, 1))], [sg.Submit(), sg.Cancel()]]
+                          'Pivoteo total'), size=(30, 1))], [sg.Submit(), sg.Cancel()]]
 
 window = sg.Window('Escoger método', layout)
 
@@ -83,96 +73,6 @@ def entradaMatricesAb(n):
            [sg.Input()],
            [sg.Input()],
            [sg.Input()]]
-    col6 = [[sg.Text('A')],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Text('b')],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()]]
-    col7 = [[sg.Text('A')],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Text('b')],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()]]
-    col8 = [[sg.Text('A')],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Text('b')],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()]]
-    col9 = [[sg.Text('A')],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Text('b')],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()]]
-    col10 = [[sg.Text('A')],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Text('b')],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()],
-           [sg.Input()]]
     
     if n==1:
         col=col1
@@ -184,16 +84,6 @@ def entradaMatricesAb(n):
         col = col4
     elif n==5:
         col = col5
-    elif n==6:
-        col = col6
-    elif n==7:
-        col = col7
-    elif n==8:
-        col = col8
-    elif n==9:
-        col = col9
-    elif n==10:
-        col = col10
         
     return col
 
@@ -218,51 +108,6 @@ def entradaMatricesA(n):
            [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
            [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
            [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()]]
-    col6 = [[sg.Text('A')],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()]]
-    col7 = [[sg.Text('A')],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()]]
-    col8 = [[sg.Text('A')],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()]]
-    col9 = [[sg.Text('A')],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()]]
-    col10 = [[sg.Text('A')],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input(),sg.Input()]]
     
     if n==1:
         col=col1
@@ -274,16 +119,6 @@ def entradaMatricesA(n):
         col = col4
     elif n==5:
         col = col5
-    elif n==6:
-        col = col6
-    elif n==7:
-        col = col7
-    elif n==8:
-        col = col8
-    elif n==9:
-        col = col9
-    elif n==10:
-        col = col10
         
     return col
 
@@ -311,51 +146,7 @@ def entradaPuntos(n):
            [sg.Input(),sg.Input()],
            [sg.Input(),sg.Input()],
            [sg.Input(),sg.Input()]]
-    col6 = [[sg.Text('x'),sg.Text('y')],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()]]
-    col7 = [[sg.Text('x'),sg.Text('y')],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()]]
-    col8 = [[sg.Text('x'),sg.Text('y')],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()]]
-    col9 = [[sg.Text('x'),sg.Text('y')],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()]]
-    col10 = [[sg.Text('x'),sg.Text('y')],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()],
-           [sg.Input(),sg.Input()]]
+
     if n==1:
         col=col1
     elif n==2:
@@ -366,16 +157,6 @@ def entradaPuntos(n):
         col =col4
     elif n==5:
         col =col5
-    elif n==6:
-        col =col6
-    elif n==7:
-        col =col7
-    elif n==8:
-        col =col8
-    elif n==9:
-        col =col9
-    elif n==10:
-        col =col10
         
     return col
 
@@ -844,7 +625,7 @@ if metodo =='Factorización LU':
     sg.theme('Dark Blue 3')
 
     layout = [[sg.Text('Escoger el número de ecuaciones')],
-              [sg.Slider(range=(1, 10), orientation='h', size=(20, 20), default_value=3)],
+              [sg.Slider(range=(1, 5), orientation='h', size=(20, 20), default_value=3)],
             [sg.Submit(), sg.Cancel()]]
 
     window = sg.Window('Jacobi', layout)
@@ -922,7 +703,7 @@ if metodo =='Jacobi':
     sg.theme('Dark Blue 3') 
 
     layout = [[sg.Text('Escoger el número de ecuaciones')],
-              [sg.Slider(range=(1, 10), orientation='h', size=(20, 20), default_value=3)],
+              [sg.Slider(range=(1, 5), orientation='h', size=(20, 20), default_value=3)],
             [sg.Submit(), sg.Cancel()]]
 
     window = sg.Window('Jacobi', layout)
@@ -1006,7 +787,7 @@ if metodo =='GaussSeidel':
     sg.theme('Dark Blue 3')  
 
     layout = [[sg.Text('Escoger el número de ecuaciones')],
-              [sg.Slider(range=(1, 10), orientation='h', size=(20, 20), default_value=3)],
+              [sg.Slider(range=(1, 5), orientation='h', size=(20, 20), default_value=3)],
             [sg.Submit(), sg.Cancel()]]
 
     window = sg.Window('GaussSeidel', layout)
@@ -1079,7 +860,7 @@ if metodo =='Eliminación Gaussiana':
     sg.theme('Dark Blue 3')  
 
     layout = [[sg.Text('Escoger el número de ecuaciones')],
-              [sg.Slider(range=(1, 10), orientation='h', size=(20, 20), default_value=3)],
+              [sg.Slider(range=(1, 5), orientation='h', size=(20, 20), default_value=3)],
             [sg.Submit(), sg.Cancel()]]
 
     window = sg.Window('Eliminación Gaussiana', layout)
@@ -1154,7 +935,7 @@ def pivoteoParcial(A, b):
 if metodo =='Pivoteo parcial':
     sg.theme('Material1')
     layout = [[sg.Text('Escoger el número de ecuaciones')],
-              [sg.Slider(range=(1, 10), orientation='h', size=(20, 20), default_value=3)],
+              [sg.Slider(range=(1, 5), orientation='h', size=(20, 20), default_value=3)],
             [sg.Submit(), sg.Cancel()]]
 
     window = sg.Window('Pivoteo parcial', layout)
@@ -1239,7 +1020,7 @@ def pivoteoTotal(A, b):
 if metodo =='Pivoteo total':
     sg.theme('DarkRed')
     layout = [[sg.Text('Escoger el número de ecuaciones')],
-              [sg.Slider(range=(1, 10), orientation='h', size=(20, 20), default_value=3)],
+              [sg.Slider(range=(1, 5), orientation='h', size=(20, 20), default_value=3)],
             [sg.Submit(), sg.Cancel()]]
 
     window = sg.Window('Pivoteo total', layout)
@@ -1283,212 +1064,3 @@ if metodo =='Pivoteo total':
              'Se obtiene como respuesta el vector x :',
              pivoteoTotal(A, b))
     window.close()
-
-#------------------------------------------------------------------------------------------------------------------------------------------------------
-
-def diferenciasDivididas (puntos):
-  n = np.size(puntos,0)
-  X = puntos[:,0]
-  Y = puntos[:,1]
-  p = 0
-  tabla = np.zeros([n, n])
-  tabla[:,0] = Y
-  for j in range(1,n):
-    for i in range(n-j):
-      tabla[i][j] = (tabla[i+1][j-1] - tabla[i][j-1]) / (X[i+j]-X[i])
-  b = np.array(tabla[0,:])
-  mult = 1
-  for i in range(n):
-    mult =1
-    for j in range(i):
-      mult = mult * (x-X[j])
-    p = p + b[i]*(mult)
-  p = sym.simplify(sym.expand(p))
-  return ("El polinomio interpolante es: " +str(p))
-
-if metodo =='Diferencias divididas':
-    sg.theme('LightBlue5')
-    
-    layout = [[sg.Text('Escoger el número de puntos a interpolar')],
-              [sg.Slider(range=(1, 10), orientation='h', size=(20, 20), default_value=3)],
-            [sg.Submit(), sg.Cancel()]]
-
-    window = sg.Window('Diferencias divididas', layout)
-
-    event, values = window.read()
-    window.close()
-    
-    n = int(values[0])
-    
-    window = sg.Window('Columns')                                   
-
-    col = entradaPuntos(n)
-    
-    layout = [[sg.Column(col)],
-              [sg.OK()]]
-    window = sg.Window('Diferencias divididas', layout)
-
-    event, values = window.read()
-    window.close()
-    
-    for i in range(len(values)):
-        values[i]=float(values[i])
-    
-    puntos = []
-    
-    cont = 0 
-    for i in range(n):
-        xy= [values[cont],values[cont+1]]
-        puntos.append(xy)
-        cont = cont+2
-        
-    puntos = np.array(puntos)
-    
-    sg.Popup('Diferencias divididas',
-             diferenciasDivididas (puntos))
-    window.close()
-    
-#---------------------------------------------------------------------------------------------------------------------    
-def lagrange(puntos):
-  n = np.size(puntos,0)
-  p = 0
-  X = puntos[:,0]
-  Y = puntos[:,1]
-  for k in range(n):
-    L=1
-    for i in range(n):
-      if i != k:
-        L = L*((x-X[i])/(X[k]-X[i]))
-    p = p +L*(Y[k])
-  p = sym.simplify(sym.expand(p))
-  return p
-    
-    
-if metodo =='Interpolación Lagrange':
-    sg.theme('LightBrown5')
-    
-    layout = [[sg.Text('Escoger el número de puntos a interpolar')],
-              [sg.Slider(range=(1, 10), orientation='h', size=(20, 20), default_value=3)],
-            [sg.Submit(), sg.Cancel()]]
-
-    window = sg.Window('Polinomio interpolante de Lagrange', layout)
-
-    event, values = window.read()
-    window.close()
-    
-    n = int(values[0])
-    
-    window = sg.Window('Columns')                                  
-
-    col = entradaPuntos(n)
-    
-    layout = [[sg.Column(col)],
-              [sg.OK()]]
-    window = sg.Window('Polinomio interpolante de Lagrange', layout)
-
-    event, values = window.read()
-    window.close()
-    
-    for i in range(len(values)):
-        values[i]=float(values[i])
-    
-    puntos = []
-    
-    cont = 0 
-    for i in range(n):
-        xy= [values[cont],values[cont+1]]
-        puntos.append(xy)
-        cont = cont+2
-        
-    puntos = np.array(puntos)
-        
-    sg.Popup('Polinomio interpolante de Lagrange',
-             lagrange(puntos))
-    window.close()
-    
-#------------------------------------------------------------------------------------------------------------------------------    
-def splinesCuadraticos(puntos):
-  n = np.size(puntos,0)
-  X = puntos[:,0]
-  Y = puntos[:,1]
-  y = [(Y[i//2]if i%2==0 else Y[(i)//2]) if i <= 2*(n-1) else 0 for i in range(1, 3*(n-1) + 1)]
-  
-  tabla = np.zeros([3*(n-1),3*(n-1)])
-
-  for i in range(n-1):
-    tabla[2*(i + 1) - 2][3*i] = tabla[2*(i + 1) - 1][3*i] = 1 
-    tabla[2*(i + 1) - 2][3*i + 1] = X[i]
-    tabla[2*(i + 1) - 2][3*i + 2] = X[i]**2
-    tabla[2*(i + 1) - 1][3*i + 1] = X[i + 1]
-    tabla[2*(i + 1) - 1][3*i + 2] = X[i + 1]**2
-
-  for i in range(n-2):
-    tabla[2*(n-1) + i][3*i + 1] = 1
-    tabla[2*(n-1) + i][3*i + 4] = -1 
-    tabla[2*(n-1) + i][3*i + 2] = 2*X[i + 1]
-    tabla[2*(n-1) + i][3*i + 5] = -2*X[i + 1]
-
-  tabla[3*(n-1) - 1][2] = 2
-
-  tabla = np.linalg.inv(tabla)
-  coef = np.matmul(tabla,y)
-  p=[]
-  cont = 0
-  for j in range(n-1):
-    pj = coef[cont] + coef[cont+1] * x + coef[cont+2]*x**2
-    cont=cont+3
-    p.append(pj)
-  return p
-    
-    
-if metodo =='Splines cuadráticas':
-    sg.theme('BlueMono')
-    
-    layout = [[sg.Text('Escoger el número de puntos a interpolar')],
-              [sg.Slider(range=(1, 10), orientation='h', size=(20, 20), default_value=3)],
-            [sg.Submit(), sg.Cancel()]]
-
-    window = sg.Window('Splines cuadráticas', layout)
-
-    event, values = window.read()
-    window.close()
-    
-    n = int(values[0])
-    
-    window = sg.Window('Columns')                                   
-
-    col = entradaPuntos(n)
-    
-    layout = [[sg.Column(col)],
-              [sg.OK()]]
-    window = sg.Window('Splines cuadráticas', layout)
-
-    event, values = window.read()
-    window.close()
-    
-    for i in range(len(values)):
-        values[i]=float(values[i])
-    
-    puntos = []
-    
-    cont = 0 
-    for i in range(n):
-        xy= [values[cont],values[cont+1]]
-        puntos.append(xy)
-        cont = cont+2
-        
-    puntos = np.array(puntos)
-    
-    sg.Popup('Splines cuadráticas',
-             'Los polinomios interpolantes son los siguientes: ',
-             splinesCuadraticos(puntos))
-    window.close()
-    
-    
-
-    
-
-
-
-
-
