@@ -1,4 +1,5 @@
 import PySimpleGUI as sg
+from matplotlib import pyplot as plt
 from prettytable import PrettyTable
 import sympy as sym
 import numpy as np
@@ -8,6 +9,8 @@ from numpy.linalg import inv
 
 
 transformations = (symp.standard_transformations + (symp.implicit_multiplication_application,))
+
+x = sym.Symbol('x')
 
 sg.theme('LightBlue5')
 
@@ -165,6 +168,26 @@ def entradaPuntos(n):
         
     return col
 
+def grafica(f):
+  xlist = np.linspace(-30, 30, num=1000)
+  ylist = []
+
+  for i in xlist:
+    ylist.append(round(float(f.subs(x, i)), 3))
+
+  fig = plt.figure()
+  ax = fig.add_subplot(1, 1, 1)
+  ax.spines['left'].set_position('center')
+  ax.spines['bottom'].set_position('zero')
+  ax.spines['right'].set_color('none')
+  ax.spines['top'].set_color('none')
+  ax.xaxis.set_ticks_position('bottom')
+  ax.yaxis.set_ticks_position('left')
+
+  plt.plot(xlist, ylist)
+  plt.grid()
+  plt.show() 
+
 #------------------------------------------------------------------------------------------------------------------------------------------------------
 
 bITable = PrettyTable()
@@ -189,8 +212,6 @@ def busquedasIncrementales (f, x0, deltax, numIteracion):
     return result
   else:
     return ("No se han encontrado raices")
-    
-x = sym.Symbol('x')
     
 
 if metodo =='Busquedas incrementales':
@@ -218,10 +239,15 @@ if metodo =='Busquedas incrementales':
       resultLayout = [[sg.Text(result)]]
     else:
       resultLayout = [[sg.Text(result[0])],
-                      [sg.Text(result[1])],]
+                      [sg.Text(result[1])],
+                      [sg.Button('Mostrar grafica')]]
 
     resultWindow = sg.Window('Resultado busquedas incrementales', resultLayout)
     event2, values2 = resultWindow.read()
+
+    if event2 == 'Mostrar grafica':
+      grafica(f)
+
     window.close()
 
 #--------------------------------------------------------------------------------------------------------------------------------
@@ -287,10 +313,15 @@ if metodo =='Biseccion':
       resultLayout = [[sg.Text(result)]]
     else:
       resultLayout = [[sg.Text(result[0])],
-                      [sg.Text(result[1])],]
+                      [sg.Text(result[1])],
+                      [sg.Button('Mostrar grafica')]]
 
     resultWindow = sg.Window('Resultados Biseccion', resultLayout)
     event2, values2 = resultWindow.read()
+    
+    if event2 == 'Mostrar grafica':
+      grafica(f)
+      
     window.close()
 
 #---------------------------------------------------------------------------------------------------------------------------------------    
@@ -353,10 +384,15 @@ if metodo =='Regla falsa':
       resultLayout = [[sg.Text(result)]]
     else:
       resultLayout = [[sg.Text(result[0])],
-                      [sg.Text(result[1])],]
+                      [sg.Text(result[1])],
+                      [sg.Button('Mostrar grafica')]]
 
     resultWindow = sg.Window('Resultados Regla Falsa', resultLayout)
     event2, values2 = resultWindow.read()
+    
+    if event2 == 'Mostrar grafica':
+      grafica(f)
+      
     window.close()
 
 #--------------------------------------------------------------------------------------------------------------------------------
@@ -407,10 +443,15 @@ if metodo =='Punto fijo':
       resultLayout = [[sg.Text(result)]]
     else:
       resultLayout = [[sg.Text(result[0])],
-                      [sg.Text(result[1])],]
+                      [sg.Text(result[1])],
+                      [sg.Button('Mostrar grafica')]]
 
     resultWindow = sg.Window('Resultados Punto Fijo', resultLayout)
     event2, values2 = resultWindow.read()
+    
+    if event2 == 'Mostrar grafica':
+      grafica(f)
+      
     window.close()
 
 #-----------------------------------------------------------------------------------------------------------------------------
@@ -460,10 +501,15 @@ if metodo =='Secante':
       resultLayout = [[sg.Text(result)]]
     else:
       resultLayout = [[sg.Text(result[0])],
-                      [sg.Text(result[1])],]
+                      [sg.Text(result[1])],
+                      [sg.Button('Mostrar grafica')]]
 
     resultWindow = sg.Window('Resultados Secante', resultLayout)
     event2, values2 = resultWindow.read()
+    
+    if event2 == 'Mostrar grafica':
+      grafica(f)
+      
     window.close()
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------    
@@ -515,10 +561,15 @@ if metodo =='Newton':
     resultLayout = [[sg.Text(result)]]
   else:
     resultLayout = [[sg.Text(result[0])],
-                    [sg.Text(result[1])],]
+                    [sg.Text(result[1])],
+                    [sg.Button('Mostrar grafica')]]
 
   resultWindow = sg.Window('Resultados Newton', resultLayout)
   event2, values2 = resultWindow.read()
+  
+  if event2 == 'Mostrar grafica':
+      grafica(f)
+      
   window.close()
   
 #-----------------------------------------------------------------------------------------------------------------------------------------------    
@@ -569,10 +620,15 @@ if metodo =='Raices multiples metodo 1':
       resultLayout = [[sg.Text(result)]]
     else:
       resultLayout = [[sg.Text(result[0])],
-                      [sg.Text(result[1])],]
+                      [sg.Text(result[1])],
+                      [sg.Button('Mostrar grafica')]]
 
     resultWindow = sg.Window('Resultados Raices multiples metodo 1', resultLayout)
     event2, values2 = resultWindow.read()
+    
+    if event2 == 'Mostrar grafica':
+      grafica(f)
+      
     window.close()
 
 #-------------------------------------------------------------------------------------------------------------------------------------
@@ -623,10 +679,15 @@ if metodo =='Raices multiples metodo 2':
       resultLayout = [[sg.Text(result)]]
     else:
       resultLayout = [[sg.Text(result[0])],
-                      [sg.Text(result[1])],]
+                      [sg.Text(result[1])],
+                      [sg.Button('Mostrar grafica')]]
 
     resultWindow = sg.Window('Resultados Raices multiples metodo 2', resultLayout)
     event2, values2 = resultWindow.read()
+    
+    if event2 == 'Mostrar grafica':
+      grafica(f)
+      
     window.close()
 
 #------------------------------------------------------------------------------------------------------------------
