@@ -9,9 +9,11 @@ from numpy.linalg import inv
 
 transformations = (symp.standard_transformations + (symp.implicit_multiplication_application,))
 
-sg.theme('LightGreen4')
+sg.theme('LightBlue5')
 
-layout = [[sg.InputCombo(('Busquedas incrementales', 
+layout = [[sg.Text('Escoga el metodo que desea utilizar.')],
+          [sg.Text('Cada vez que quiera escoger un metdo diferente debe volver a correr la aplicacion.')],
+          [sg.InputCombo(('Busquedas incrementales', 
                           'Biseccion',
                           'Regla falsa',
                           'Punto fijo',
@@ -24,7 +26,10 @@ layout = [[sg.InputCombo(('Busquedas incrementales',
                           'GaussSeidel',
                           'Eliminación Gaussiana',
                           'Pivoteo parcial',
-                          'Pivoteo total'), size=(30, 1))], [sg.Submit(), sg.Cancel()]]
+                          'Pivoteo total',
+                          'Sor',
+                          'Vandermonde',
+                          'Newton interpolacion'), size=(30, 1))], [sg.Submit(), sg.Cancel()]]
 
 window = sg.Window('Escoger método', layout)
 
@@ -189,13 +194,15 @@ x = sym.Symbol('x')
     
 
 if metodo =='Busquedas incrementales':
-    sg.theme('LightYellow') 
+    sg.theme('LightBlue5') 
 
-    layout = [[sg.Text('f', size=(15, 1)), sg.InputText()],
+    layout = [[sg.Text('Ingrese los datos solicitados.')],
+              [sg.Text('Para expresar exponentes utilice ** o exp() y ulitice puntos para los decimales.')],
+              [sg.Text('f', size=(15, 1)), sg.InputText()],
               [sg.Text('x0', size=(15, 1)), sg.InputText()],
-            [sg.Text('deltax', size=(15, 1)), sg.InputText()],
-            [sg.Text('numIteracion', size=(15, 1)), sg.InputText()],
-            [sg.Submit(), sg.Cancel()]]
+              [sg.Text('deltax', size=(15, 1)), sg.InputText()],
+              [sg.Text('numIteracion', size=(15, 1)), sg.InputText()],
+              [sg.Submit(), sg.Cancel()]]
 
     window = sg.Window('Busquedas incrementales', layout)
 
@@ -252,14 +259,16 @@ def biseccion(f,xi, xf, tol, numIter):
       return("No se halló una solución")
          
 if metodo =='Biseccion':
-    sg.theme('Light Purple')  # please make your windows colorful
+    sg.theme('LightBlue5')  # please make your windows colorful
 
-    layout = [[sg.Text('f', size=(15, 1)), sg.InputText()],
+    layout = [[sg.Text('Ingrese los datos solicitados.')],
+              [sg.Text('Para expresar exponentes utilice ** o exp() y ulitice puntos para los decimales.')],
+              [sg.Text('f', size=(15, 1)), sg.InputText()],
               [sg.Text('xinicial', size=(15, 1)), sg.InputText()],
               [sg.Text('xfinal', size=(15, 1)), sg.InputText()],
-            [sg.Text('tolerancia', size=(15, 1)), sg.InputText()],
-            [sg.Text('Numerodeiteraciones', size=(15, 1)), sg.InputText()],
-            [sg.Submit(), sg.Cancel()]]
+              [sg.Text('tolerancia', size=(15, 1)), sg.InputText()],
+              [sg.Text('Numerodeiteraciones', size=(15, 1)), sg.InputText()],
+              [sg.Submit(), sg.Cancel()]]
 
     window = sg.Window('Bisección', layout)
 
@@ -316,14 +325,16 @@ def reglaFalsa (f,xi, xf, tol, numIter):
       return("No se halló una solución")
      
 if metodo =='Regla falsa':
-    sg.theme('Dark Blue 3')  
+    sg.theme('LightBlue5')  
 
-    layout = [[sg.Text('f', size=(15, 1)), sg.InputText()],
+    layout = [[sg.Text('Ingrese los datos solicitados.')],
+              [sg.Text('Para expresar exponentes utilice ** o exp() y ulitice puntos para los decimales.')],
+              [sg.Text('f', size=(15, 1)), sg.InputText()],
               [sg.Text('x0', size=(15, 1)), sg.InputText()],
-            [sg.Text('xf', size=(15, 1)), sg.InputText()],
-            [sg.Text('tol', size=(15, 1)), sg.InputText()],
-            [sg.Text('numIteracion', size=(15, 1)), sg.InputText()],
-            [sg.Submit(), sg.Cancel()]]
+              [sg.Text('xf', size=(15, 1)), sg.InputText()],
+              [sg.Text('tol', size=(15, 1)), sg.InputText()],
+              [sg.Text('numIteracion', size=(15, 1)), sg.InputText()],
+              [sg.Submit(), sg.Cancel()]]
 
     window = sg.Window('Regla falsa', layout)
 
@@ -365,14 +376,16 @@ def puntoFijo(f, g, x0, tol, numIter):
     
     
 if metodo =='Punto fijo':
-    sg.theme('LightBlue1') 
+    sg.theme('LightBlue5') 
 
-    layout = [[sg.Text('f', size=(15, 1)), sg.InputText()],
+    layout = [[sg.Text('Ingrese los datos solicitados.')],
+              [sg.Text('Para expresar exponentes utilice ** o exp() y ulitice puntos para los decimales.')],
+              [sg.Text('f', size=(15, 1)), sg.InputText()],
               [sg.Text('g', size=(15, 1)), sg.InputText()],
               [sg.Text('x0', size=(15, 1)), sg.InputText()],
-            [sg.Text('tol', size=(15, 1)), sg.InputText()],
-            [sg.Text('numIteracion', size=(15, 1)), sg.InputText()],
-            [sg.Submit(), sg.Cancel()]]
+              [sg.Text('tol', size=(15, 1)), sg.InputText()],
+              [sg.Text('numIteracion', size=(15, 1)), sg.InputText()],
+              [sg.Submit(), sg.Cancel()]]
 
     window = sg.Window('Punto Fijo', layout)
 
@@ -415,14 +428,16 @@ def metodoSecante(f,x0,x1,numIter,tol):
       x1 = newX1
 
 if metodo =='Secante':
-    sg.theme('BluePurple')  # please make your windows colorful
+    sg.theme('LightBlue5')
 
-    layout = [[sg.Text('f', size=(15, 1)), sg.InputText()],
+    layout = [[sg.Text('Ingrese los datos solicitados.')],
+              [sg.Text('Para expresar exponentes utilice ** o exp() y ulitice puntos para los decimales.')],
+              [sg.Text('f', size=(15, 1)), sg.InputText()],
               [sg.Text('x0', size=(15, 1)), sg.InputText()],
-            [sg.Text('xf', size=(15, 1)), sg.InputText()],
-            [sg.Text('tol', size=(15, 1)), sg.InputText()],
-            [sg.Text('numIteracion', size=(15, 1)), sg.InputText()],
-            [sg.Submit(), sg.Cancel()]]
+              [sg.Text('xf', size=(15, 1)), sg.InputText()],
+              [sg.Text('tol', size=(15, 1)), sg.InputText()],
+              [sg.Text('numIteracion', size=(15, 1)), sg.InputText()],
+              [sg.Submit(), sg.Cancel()]]
 
     window = sg.Window('Secante', layout)
 
@@ -464,9 +479,11 @@ def Newton (f, df, x0, tol, numIter):
     return("El método no converge")
 
 if metodo =='Newton':
-  sg.theme('BluePurple') 
+  sg.theme('LightBlue5') 
 
-  layout = [[sg.Text('f', size=(15, 1)), sg.InputText()],
+  layout = [[sg.Text('Ingrese los datos solicitados.')],
+            [sg.Text('Para expresar exponentes utilice ** o exp() y ulitice puntos para los decimales.')],
+            [sg.Text('f', size=(15, 1)), sg.InputText()],
             [sg.Text('x0', size=(15, 1)), sg.InputText()],
             [sg.Text('tol', size=(15, 1)), sg.InputText()],
             [sg.Text('numIteracion', size=(15, 1)), sg.InputText()],
@@ -514,13 +531,15 @@ def RaicesMultiples (f, df, dff, x0, numIter, tol):
     return("El método no converge")
 
 if metodo =='Raices multiples metodo 1':
-    sg.theme('BluePurple') 
+    sg.theme('LightBlue5') 
 
-    layout = [[sg.Text('f', size=(15, 1)), sg.InputText()],
+    layout = [[sg.Text('Ingrese los datos solicitados.')],
+              [sg.Text('Para expresar exponentes utilice ** o exp() y ulitice puntos para los decimales.')],
+              [sg.Text('f', size=(15, 1)), sg.InputText()],
               [sg.Text('x0', size=(15, 1)), sg.InputText()],
-            [sg.Text('tol', size=(15, 1)), sg.InputText()],
-            [sg.Text('numIteracion', size=(15, 1)), sg.InputText()],
-            [sg.Submit(), sg.Cancel()]]
+              [sg.Text('tol', size=(15, 1)), sg.InputText()],
+              [sg.Text('numIteracion', size=(15, 1)), sg.InputText()],
+              [sg.Submit(), sg.Cancel()]]
 
     window = sg.Window('Raíces multiples meotodo 1', layout)
 
@@ -565,13 +584,15 @@ def RaicesMultiples2 (f, df, dff, x0, numIter, tol):
     return("El método no converge")
 
 if metodo =='Raices multiples metodo 2':
-    sg.theme('BluePurple') 
+    sg.theme('LightBlue5') 
 
-    layout = [[sg.Text('f', size=(15, 1)), sg.InputText()],
+    layout = [[sg.Text('Ingrese los datos solicitados.')],
+              [sg.Text('Para expresar exponentes utilice ** o exp() y ulitice puntos para los decimales.')],
+              [sg.Text('f', size=(15, 1)), sg.InputText()],
               [sg.Text('x0', size=(15, 1)), sg.InputText()],
-            [sg.Text('tol', size=(15, 1)), sg.InputText()],
-            [sg.Text('numIteracion', size=(15, 1)), sg.InputText()],
-            [sg.Submit(), sg.Cancel()]]
+              [sg.Text('tol', size=(15, 1)), sg.InputText()],
+              [sg.Text('numIteracion', size=(15, 1)), sg.InputText()],
+              [sg.Submit(), sg.Cancel()]]
 
     window = sg.Window('Raíces multiples meotodo 2', layout)
 
@@ -620,13 +641,12 @@ def factorizacionLU(A):
     return  LF, U
 
 
-
 if metodo =='Factorización LU':
-    sg.theme('Dark Blue 3')
+    sg.theme('LightBlue5')
 
-    layout = [[sg.Text('Escoger el número de ecuaciones')],
+    layout = [[sg.Text('Defina el tamaño de la matriz')],
               [sg.Slider(range=(1, 5), orientation='h', size=(20, 20), default_value=3)],
-            [sg.Submit(), sg.Cancel()]]
+              [sg.Submit(), sg.Cancel()]]
 
     window = sg.Window('Jacobi', layout)
 
@@ -639,7 +659,8 @@ if metodo =='Factorización LU':
 
     col = entradaMatricesA(n)
         
-    layout = [[sg.Column(col)],
+    layout = [[sg.Text('Ingrese la matriz')],
+              [sg.Column(col)],
               [sg.OK()]]
     
     window = sg.Window('FactorizacionLU', layout)
@@ -700,11 +721,11 @@ def jacobi(A,b,tol,numIter):
   return result
 
 if metodo =='Jacobi':
-    sg.theme('Dark Blue 3') 
+    sg.theme('LightBlue5') 
 
     layout = [[sg.Text('Escoger el número de ecuaciones')],
               [sg.Slider(range=(1, 5), orientation='h', size=(20, 20), default_value=3)],
-            [sg.Submit(), sg.Cancel()]]
+              [sg.Submit(), sg.Cancel()]]
 
     window = sg.Window('Jacobi', layout)
 
@@ -717,7 +738,9 @@ if metodo =='Jacobi':
 
     col = entradaMatricesAb(n)
         
-    layout = [[sg.Column(col)],
+    layout = [[sg.Text('Ingrese los datos solicitados.')],
+              [sg.Text('Para la matriz ingrese solo el coeficiente de las variables.')],
+              [sg.Column(col)],
               [sg.Text('Tolerancia', size=(15, 1)), sg.InputText()],
               [sg.Text('NumeroIteraciones', size=(15, 1)), sg.InputText()],
               
@@ -784,11 +807,11 @@ def GaussSeidel(A,b,tol,numIter):
   return("El método converge en "+str(xn))
 
 if metodo =='GaussSeidel':
-    sg.theme('Dark Blue 3')  
+    sg.theme('LightBlue5')  
 
     layout = [[sg.Text('Escoger el número de ecuaciones')],
               [sg.Slider(range=(1, 5), orientation='h', size=(20, 20), default_value=3)],
-            [sg.Submit(), sg.Cancel()]]
+              [sg.Submit(), sg.Cancel()]]
 
     window = sg.Window('GaussSeidel', layout)
 
@@ -801,7 +824,9 @@ if metodo =='GaussSeidel':
     
     col = entradaMatricesAb(n)
         
-    layout = [[sg.Column(col)],
+    layout = [[sg.Text('Ingrese los datos solicitados.')],
+              [sg.Text('Para la matriz ingrese solo el coeficiente de las variables.')],
+              [sg.Column(col)],
               [sg.Text('Tolerancia', size=(15, 1)), sg.InputText()],
               [sg.Text('NumeroIteraciones', size=(15, 1)), sg.InputText()],
               
@@ -857,11 +882,11 @@ def eliminacionGaussiana(A, b):
   return x
     
 if metodo =='Eliminación Gaussiana':
-    sg.theme('Dark Blue 3')  
+    sg.theme('LightBlue5')  
 
     layout = [[sg.Text('Escoger el número de ecuaciones')],
               [sg.Slider(range=(1, 5), orientation='h', size=(20, 20), default_value=3)],
-            [sg.Submit(), sg.Cancel()]]
+              [sg.Submit(), sg.Cancel()]]
 
     window = sg.Window('Eliminación Gaussiana', layout)
 
@@ -874,8 +899,10 @@ if metodo =='Eliminación Gaussiana':
     
     col = entradaMatricesAb(n)
         
-    layout = [[sg.Column(col)],
+    layout = [[sg.Text('Para la matriz ingrese solo el coeficiente de las variables.')],
+              [sg.Column(col)],
               [sg.OK()]]
+
     window = sg.Window('Eliminación Gaussiana', layout)
 
     event, values = window.read()
@@ -933,10 +960,11 @@ def pivoteoParcial(A, b):
 
 
 if metodo =='Pivoteo parcial':
-    sg.theme('Material1')
-    layout = [[sg.Text('Escoger el número de ecuaciones')],
+    sg.theme('LightBlue5')
+
+    layout = [[sg.Text('Defina el tamaño de la matriz')],
               [sg.Slider(range=(1, 5), orientation='h', size=(20, 20), default_value=3)],
-            [sg.Submit(), sg.Cancel()]]
+              [sg.Submit(), sg.Cancel()]]
 
     window = sg.Window('Pivoteo parcial', layout)
 
@@ -949,8 +977,10 @@ if metodo =='Pivoteo parcial':
     
     col = entradaMatricesAb(n)
         
-    layout = [[sg.Column(col)],
+    layout = [[sg.Text('Ingrese la matriz.')],
+              [sg.Column(col)],
               [sg.OK()]]
+
     window = sg.Window('Pivoteo parcial', layout)
 
     event, values = window.read()
@@ -1018,10 +1048,10 @@ def pivoteoTotal(A, b):
   return B
 
 if metodo =='Pivoteo total':
-    sg.theme('DarkRed')
-    layout = [[sg.Text('Escoger el número de ecuaciones')],
+    sg.theme('LightBlue5')
+    layout = [[sg.Text('Defina el tamaño de la matriz')],
               [sg.Slider(range=(1, 5), orientation='h', size=(20, 20), default_value=3)],
-            [sg.Submit(), sg.Cancel()]]
+              [sg.Submit(), sg.Cancel()]]
 
     window = sg.Window('Pivoteo total', layout)
 
@@ -1034,8 +1064,10 @@ if metodo =='Pivoteo total':
     
     col = entradaMatricesAb(n)
         
-    layout = [[sg.Column(col)],
+    layout = [[sg.Text('Ingrese la matriz.')],
+              [sg.Column(col)],
               [sg.OK()]]
+
     window = sg.Window('Pivoteo total', layout)
 
     event, values = window.read()
@@ -1064,3 +1096,88 @@ if metodo =='Pivoteo total':
              'Se obtiene como respuesta el vector x :',
              pivoteoTotal(A, b))
     window.close()
+
+#----------------------------------------------------------------------------------------------------------------------------------------------------
+
+#def sor(x0, A, b, tol, numIter, w):
+#  n = np.size(A,0)
+#  L = - np.tril(A, -1)
+#  U = - np.triu(A,1)
+#  D = A+L+U
+#  x0 = np.zeros([n,1])
+#  Tg = np.matmul(inv(D-L),U)
+#  autovalores, autovectores = np.linalg.eig(Tg)
+#  autovalores = abs(autovalores)
+#
+#  for lam in autovalores:
+#    if lam >= 1:
+#      return ("El método no converge.")
+#
+#  C = np.matmul(inv(D-L),b)
+#  xn = (np.matmul(Tg,x0))+C
+#  error = np.array(abs(xn - (np.dot(Tg,xn)+C)))
+#  error = np.amax(error)
+#  iter = 0
+#  while ((error > tol) and (iter<numIter)):
+#    nuevo = np.matmul(Tg,xn)+C
+#    error = np.array(abs(nuevo-xn))
+#    error = np.amax(error)
+#    xn = nuevo
+#    iter = iter +1
+#  return("El método converge en "+str(xn))
+#
+#
+#if metodo =='Sor':
+#    sg.theme('Dark Blue 3')  
+#
+#    layout = [[sg.Text('Escoger el número de ecuaciones')],
+#              [sg.Slider(range=(1, 5), orientation='h', size=(20, 20), default_value=3)],
+#              [sg.Submit(), sg.Cancel()]]
+#
+#    window = sg.Window('Sor', layout)
+#
+#    event, values = window.read()
+#    window.close()
+#    
+#    n = int(values[0])
+#
+#    window = sg.Window('Columns')
+#    
+#    col = entradaMatricesAb(n)
+#        
+#    layout = [[sg.Column(col)],
+#              [sg.Text('Tolerancia', size=(15, 1)), sg.InputText()],
+#              [sg.Text('NumeroIteraciones', size=(15, 1)), sg.InputText()],
+#              
+#              [sg.OK()]]
+#    window = sg.Window('GaussSeidel', layout)
+#
+#    event, values = window.read()
+#    window.close()
+#    
+#    for i in range(len(values)):
+#        values[i]=float(values[i])
+#        
+#    
+#    A = []
+#    b = []
+#    cont = 0
+#    
+#    for i in range(n):
+#        row = []
+#        for j in range(n):
+#            row.append(values[cont])
+#            cont = cont +1
+#        A.append(row)
+#    A=np.array(A)
+#    for i in range(n):
+#        b.append([values[cont]])
+#        cont = cont+1
+#    b = np.array(b)
+#    tol = values[cont]
+#    numIter = int(values[cont+1])
+#        
+#    sg.Popup('GaussSeidel',
+#             GaussSeidel(A, b,tol,numIter))
+#    window.close()
+#
