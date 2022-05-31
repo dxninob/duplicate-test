@@ -205,9 +205,9 @@ if metodo =='Busquedas incrementales':
               [sg.Submit(), sg.Cancel()]]
 
     window = sg.Window('Busquedas incrementales', layout)
-
     event, values = window.read()
     window.close()
+
     f,x0, deltax, numIteracion = values[0],float(values[1]), float(values[2]),int(values[3]) 
     
     f = parse_expr(f, transformations=transformations)
@@ -215,11 +215,13 @@ if metodo =='Busquedas incrementales':
     result = busquedasIncrementales(f,x0,deltax,numIteracion)
 
     if(len(result) != 2):
-      sg.Popup('Resultados Busquedas Incrementales', result, line_width=300)
+      resultLayout = [[sg.Text(result)]]
     else:
-      sg.Popup('Resultados Busquedas Incrementales', result[0], line_width=300)
-      sg.Popup('Resultados Busquedas Incrementales', result[1], line_width=300)
-    
+      resultLayout = [[sg.Text(result[0])],
+                      [sg.Text(result[1])],]
+
+    resultWindow = sg.Window('Resultado busquedas incrementales', resultLayout)
+    event2, values2 = resultWindow.read()
     window.close()
 
 #--------------------------------------------------------------------------------------------------------------------------------
@@ -282,11 +284,13 @@ if metodo =='Biseccion':
     result = biseccion(f, x0, xf, tol, numIter)
 
     if(len(result) != 2):
-      sg.Popup('Resultados Biseccion', result, line_width=300)
+      resultLayout = [[sg.Text(result)]]
     else:
-      sg.Popup('Resultados Biseccion', result[0], line_width=300)
-      sg.Popup('Resultados Biseccion', result[1], line_width=300)
+      resultLayout = [[sg.Text(result[0])],
+                      [sg.Text(result[1])],]
 
+    resultWindow = sg.Window('Resultados Biseccion', resultLayout)
+    event2, values2 = resultWindow.read()
     window.close()
 
 #---------------------------------------------------------------------------------------------------------------------------------------    
@@ -346,11 +350,13 @@ if metodo =='Regla falsa':
     result = reglaFalsa(f, x0, xf, tol, numIter)
 
     if(len(result) != 2):
-      sg.Popup('Resultados Regla Falsa', result, line_width=300)
+      resultLayout = [[sg.Text(result)]]
     else:
-      sg.Popup('Resultados Regla Falsa', result[0], line_width=300)
-      sg.Popup('Resultados Regla Falsa', result[1], line_width=300)
-    
+      resultLayout = [[sg.Text(result[0])],
+                      [sg.Text(result[1])],]
+
+    resultWindow = sg.Window('Resultados Regla Falsa', resultLayout)
+    event2, values2 = resultWindow.read()
     window.close()
 
 #--------------------------------------------------------------------------------------------------------------------------------
@@ -398,11 +404,13 @@ if metodo =='Punto fijo':
     result = puntoFijo(f, g, x0, tol, numIter)
 
     if(len(result) != 2):
-      sg.Popup('Resultados Punto Fijo', result, line_width=300)
+      resultLayout = [[sg.Text(result)]]
     else:
-      sg.Popup('Resultados Punto Fijo', result[0], line_width=300)
-      sg.Popup('Resultados Punto Fijo', result[1], line_width=300)
+      resultLayout = [[sg.Text(result[0])],
+                      [sg.Text(result[1])],]
 
+    resultWindow = sg.Window('Resultados Punto Fijo', resultLayout)
+    event2, values2 = resultWindow.read()
     window.close()
 
 #-----------------------------------------------------------------------------------------------------------------------------
@@ -449,11 +457,13 @@ if metodo =='Secante':
     result = metodoSecante(f, x0, xf, numIter, tol)
 
     if(len(result) != 2):
-      sg.Popup('Resultados Secante', result, line_width=300)
+      resultLayout = [[sg.Text(result)]]
     else:
-      sg.Popup('Resultados Secante', result[0], line_width=300)
-      sg.Popup('Resultados Secante', result[1], line_width=300)
+      resultLayout = [[sg.Text(result[0])],
+                      [sg.Text(result[1])],]
 
+    resultWindow = sg.Window('Resultados Secante', resultLayout)
+    event2, values2 = resultWindow.read()
     window.close()
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------    
@@ -476,7 +486,7 @@ def Newton (f, df, x0, tol, numIter):
     result = [newtonTable, str(xn) + " es raíz con tolerancia " + str(tol)+ " y el algorítmo paró en la iteración: " + str(cont)]
     return result
   else:
-    return("El método no converge")
+    return ("El método no converge")
 
 if metodo =='Newton':
   sg.theme('LightBlue5') 
@@ -500,15 +510,17 @@ if metodo =='Newton':
   df = sym.diff(f, x)
 
   result = Newton(f, df, x0, tol, numIter)
-  
+
   if(len(result) != 2):
-      sg.Popup('Resultados Newton', result, line_width=300)
+    resultLayout = [[sg.Text(result)]]
   else:
-      sg.Popup('Resultados Newton', result[0], line_width=300)
-      sg.Popup('Resultados Newton', result[1], line_width=300)
+    resultLayout = [[sg.Text(result[0])],
+                    [sg.Text(result[1])],]
 
+  resultWindow = sg.Window('Resultados Newton', resultLayout)
+  event2, values2 = resultWindow.read()
   window.close()
-
+  
 #-----------------------------------------------------------------------------------------------------------------------------------------------    
 
 raicesMultiplesTable = PrettyTable()
@@ -554,12 +566,13 @@ if metodo =='Raices multiples metodo 1':
     result = RaicesMultiples(f, df, dff, x0, numIter, tol)
 
     if(len(result) != 2):
-      sg.Popup('Resultados Raices Multipes metodo 1', result, line_width=300)
+      resultLayout = [[sg.Text(result)]]
     else:
-      sg.Popup('Resultados Raices Multipes metodo 1', result[0], line_width=300)
-      sg.Popup('Resultados Raices Multipes metodo 1', result[1], line_width=300)
+      resultLayout = [[sg.Text(result[0])],
+                      [sg.Text(result[1])],]
 
-
+    resultWindow = sg.Window('Resultados Raices multiples metodo 1', resultLayout)
+    event2, values2 = resultWindow.read()
     window.close()
 
 #-------------------------------------------------------------------------------------------------------------------------------------
@@ -607,11 +620,13 @@ if metodo =='Raices multiples metodo 2':
     result = RaicesMultiples2(f, df, dff, x0, numIter, tol)
 
     if(len(result) != 2):
-      sg.Popup('Resultados Raices Multipes metodo 2', result, line_width=300)
+      resultLayout = [[sg.Text(result)]]
     else:
-      sg.Popup('Resultados Raices Multipes metodo 2', result[0], line_width=300)
-      sg.Popup('Resultados Raices Multipes metodo 2', result[1], line_width=300)
+      resultLayout = [[sg.Text(result[0])],
+                      [sg.Text(result[1])],]
 
+    resultWindow = sg.Window('Resultados Raices multiples metodo 2', resultLayout)
+    event2, values2 = resultWindow.read()
     window.close()
 
 #------------------------------------------------------------------------------------------------------------------
@@ -664,7 +679,6 @@ if metodo =='Factorización LU':
               [sg.OK()]]
     
     window = sg.Window('FactorizacionLU', layout)
-
     event, values = window.read()
     window.close()
     
@@ -1007,7 +1021,7 @@ if metodo =='Pivoteo parcial':
     b = np.array(b)
         
     sg.Popup('Pivoteo parcial',
-             'Se obtiene como respuesta el vector x :',
+             'Se obtiene como respuesta el vector x:',
              pivoteoParcial(A, b))
     window.close()
 
@@ -1093,7 +1107,7 @@ if metodo =='Pivoteo total':
     b = np.array(b)
     
     sg.Popup('Pivoteo total',
-             'Se obtiene como respuesta el vector x :',
+             'Se obtiene como respuesta el vector x:',
              pivoteoTotal(A, b))
     window.close()
 
