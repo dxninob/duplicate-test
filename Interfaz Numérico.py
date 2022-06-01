@@ -15,7 +15,7 @@ x = sym.Symbol('x')
 sg.theme('LightBlue5')
 
 layout = [[sg.Text('Escoga el metodo que desea utilizar.')],
-          [sg.Text('Cada vez que quiera escoger un metdo diferente debe volver a correr la aplicacion.')],
+          [sg.Text('Cada vez que quiera escoger un metodo diferente debe volver a correr la aplicacion.')],
           [sg.InputCombo(('Busquedas incrementales', 
                           'Biseccion',
                           'Regla falsa',
@@ -1173,7 +1173,65 @@ if metodo =='Pivoteo total':
     window.close()
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------
+def vander(x,y):
+  
+  points = zip(x, y)
+  sorted_points = sorted(points)
+  new_xs = [point[0] for point in sorted_points]
+  new_ys = [point[1] for point in sorted_points]
+  xn = np.array(new_xs)
+  yn = np.array([new_ys]).T
 
+  A = np.vander(xn)
+  Ainv = np.linalg.inv(A)
+  a = np.dot(Ainv, yn)
+  
+  return [A, Ainv, a]
+
+def convert(string):
+  vector = []
+  li = list(string.split(" "))
+  for i in li:
+    vector.append(int(i))
+  
+  return vector
+
+if metodo =='Vandermonde':
+    sg.theme('LightBlue5')
+
+    layout = [[sg.Text('Ingrese los vectores X y Y')],
+              [sg.Text('Digite cada numero seguido de un espacio')],
+              [sg.Text('X', size=(15, 1)), sg.InputText()],
+              [sg.Text('Y', size=(15, 1)), sg.InputText()],
+              [sg.Submit(), sg.Cancel()]]
+
+    window = sg.Window('Vandermonde', layout)
+
+    event, values = window.read()
+    window.close()
+    
+    x = convert(values[0])
+    y = convert(values[1])
+
+    result = vander(x, y)
+
+    resultLayout = [[sg.Text('Matriz de Vandemonde:')],
+                    [sg.Text(result[0])],
+                    [sg.Text('Matriz inversa:')],
+                    [sg.Text(result[1])],
+                    [sg.Text(result[2])],
+                    [sg.Button('Mostrar grafica')]]
+    
+    resultWindow = sg.Window('Resultados Raices multiples metodo 1', resultLayout)
+    event2, values2 = resultWindow.read()
+    
+    if event2 == 'Mostrar grafica':
+      grafica(f)
+      
+    window.close()
+
+
+  
 #def sor(x0, A, b, tol, numIter, w):
 #  n = np.size(A,0)
 #  L = - np.tril(A, -1)
